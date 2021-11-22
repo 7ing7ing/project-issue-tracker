@@ -80,6 +80,22 @@ describe("Functional Tests", function () {
         .end(function (err, res) {
           assert.equal(res.status, 200);
           res.body.forEach((issue) => {
+            var test = "";
+            if (
+              issue._id === undefined ||
+              issue.issue_title === undefined ||
+              issue.issue_text === undefined ||
+              issue.created_by === undefined ||
+              issue.assigned_to === undefined ||
+              issue.status_text === undefined ||
+              issue.created_on === undefined ||
+              issue.updated_on === undefined ||
+              issue.open === undefined
+            ) {
+              console.log("UNDEFINED FOUND");
+              console.log(issue);
+            }
+
             assert.notEqual(issue._id, undefined);
             assert.notEqual(issue.issue_title, undefined);
             assert.notEqual(issue.issue_text, undefined);

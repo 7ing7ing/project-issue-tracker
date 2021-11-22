@@ -42,11 +42,13 @@ module.exports = function (app) {
         _id: userId,
       });
 
-      res.send(newIssue);
-
       newIssue.save(function (err, user) {
-        if (err) return console.log(err);
-        console.log("Issue created succesfully");
+        if (err) {
+          return console.log(err);
+        } else {
+          res.send(user);
+          console.log("Issue created succesfully");
+        }
       });
     })
     .put(function (req, res) {
