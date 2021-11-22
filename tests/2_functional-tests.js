@@ -13,13 +13,14 @@ describe("Functional Tests", function () {
     it("Create an issue with every field", function (done) {
       chai
         .request(server)
-        .post("/api/issues/projects")
+        .post("/api/issues/project")
         .send({
           issue_title: "Project issue",
           issue_text: "Not passing tests",
           created_by: "Ting-Ting",
           assigned_to: "FCC",
           status_text: "Not solved",
+          project: "project",
         })
         .end(function (err, res) {
           testId = res.body._id;
@@ -146,6 +147,7 @@ describe("Functional Tests", function () {
         .send({
           _id: testId,
           issue_text: "Problem XYZ",
+          project: "project",
         })
         .end(function (err, res) {
           assert.equal(res.status, 200);
@@ -162,6 +164,7 @@ describe("Functional Tests", function () {
           _id: testId,
           issue_text: "Problem XYZ",
           status_text: "Solved",
+          project: "project",
         })
         .end(function (err, res) {
           assert.equal(res.status, 200);

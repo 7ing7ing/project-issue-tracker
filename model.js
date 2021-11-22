@@ -11,6 +11,7 @@ const issueSchema = new Schema({
   updated_on: { type: Date, default: new Date() },
   open: { type: Boolean, default: true },
   _id: String,
+  project: { type: String, required: true },
 });
 
 const Issue = mongoose.model("Issue", issueSchema);

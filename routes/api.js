@@ -12,7 +12,8 @@ module.exports = function (app) {
     .route("/api/issues/:project")
 
     .get(function (req, res) {
-      const queryParams = req.query;
+      let projectUrl = req.params.project;
+      const queryParams = Object.assign({}, req.query, { project: projectUrl });
 
       Issue.find(queryParams, function (err, issues) {
         if (err) {
@@ -24,9 +25,14 @@ module.exports = function (app) {
     })
 
     .post(function (req, res) {
-      const project = req.body;
+      let projectUrl = req.params.project;
+      const requestBody = req.body;
 
-      if (!project.issue_title || !project.issue_text || !project.created_by) {
+      if (
+        !requestBody.issue_title ||
+        !requestBody.issue_text ||
+        !requestBody.created_by
+      ) {
         res.json({ error: "required field(s) missing" });
         return;
       }
@@ -34,12 +40,13 @@ module.exports = function (app) {
 
       const userId = ObjectID();
       const newIssue = new Issue({
-        issue_title: project.issue_title,
-        issue_text: project.issue_text,
-        created_by: project.created_by,
-        assigned_to: project.assigned_to,
-        status_text: project.status_text,
+        issue_title: requestBody.issue_title,
+        issue_text: requestBody.issue_text,
+        created_by: requestBody.created_by,
+        assigned_to: requestBody.assigned_to,
+        status_text: requestBody.status_text,
         _id: userId,
+        project: projectUrl,
       });
 
       newIssue.save(function (err, user) {
@@ -52,6 +59,7 @@ module.exports = function (app) {
       });
     })
     .put(function (req, res) {
+      let projectUrl = req.params.project;
       if (!req.body._id) {
         return res.json({
           error: "missing _id",
@@ -77,8 +85,8 @@ module.exports = function (app) {
             fieldsToUpdate.updated_on = new Date();
           }
         });
-        const id = { _id: req.body._id };
-        Issue.findOneAndUpdate(id, fieldsToUpdate, function (err, issue) {
+        const filter = { _id: req.body._id, project: projectUrl };
+        Issue.findOneAndUpdate(filter, fieldsToUpdate, function (err, issue) {
           if (err) {
             return res.json({
               error: "could not update",
@@ -93,7 +101,7 @@ module.exports = function (app) {
             } else {
               return res.json({
                 result: "succesfully updated",
-                _id: id._id,
+                _id: filter._id,
               });
             }
           }
@@ -103,22 +111,23 @@ module.exports = function (app) {
 
     .delete(function (req, res) {
       //console.log("deleting issue");
-      const id = { _id: req.body._id };
-      Issue.deleteOne(id, function (err, itemsDeleted) {
+      let projectUrl = req.params.project;
+      const filter = { _id: req.body._id, project: projectUrl };
+      Issue.deleteOne(filter, function (err, itemsDeleted) {
         if (err) {
           return res.json({
             error: "could not delete",
-            _id: id._id,
+            _id: filter._id,
           });
         } else if (itemsDeleted.deletedCount === 0) {
           return res.json({
             error: "could not delete",
-            _id: id._id,
+            _id: filter._id,
           });
         } else {
           return res.json({
             result: "succesfully deleted",
-            _id: id._id,
+            _id: filter._id,
           });
         }
       });
