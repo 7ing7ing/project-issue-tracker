@@ -151,7 +151,7 @@ describe("Functional Tests", function () {
         })
         .end(function (err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.body.result, "succesfully updated");
+          assert.equal(res.body.result, "successfully updated");
           assert.equal(res.body._id, testId);
           done();
         });
@@ -168,7 +168,7 @@ describe("Functional Tests", function () {
         })
         .end(function (err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.body.result, "succesfully updated");
+          assert.equal(res.body.result, "successfully updated");
           assert.equal(res.body._id, testId);
           done();
         });
@@ -232,7 +232,7 @@ describe("Functional Tests", function () {
         })
         .end(function (err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.body.result, "succesfully deleted");
+          assert.equal(res.body.result, "successfully deleted");
           assert.equal(res.body._id, testId);
           done();
         });
@@ -260,8 +260,7 @@ describe("Functional Tests", function () {
         })
         .end(function (err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.body.error, "could not delete");
-          assert.equal(res.body._id, "");
+          assert.equal(res.body.error, "missing _id");
           done();
         });
     });

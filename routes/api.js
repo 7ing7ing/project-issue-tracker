@@ -76,6 +76,7 @@ module.exports = function (app) {
       ) {
         return res.json({
           error: "no update field(s) sent",
+          _id: req.body._id,
         });
       } else {
         const fieldsToUpdate = {};
@@ -112,6 +113,11 @@ module.exports = function (app) {
     .delete(function (req, res) {
       //console.log("deleting issue");
       let projectUrl = req.params.project;
+      if (!req.body._id) {
+        return res.json({
+          error: "missing _id",
+        });
+      }
       const filter = { _id: req.body._id, project: projectUrl };
       Issue.deleteOne(filter, function (err, itemsDeleted) {
         if (err) {
@@ -126,7 +132,7 @@ module.exports = function (app) {
           });
         } else {
           return res.json({
-            result: "succesfully deleted",
+            result: "successfully deleted",
             _id: filter._id,
           });
         }
