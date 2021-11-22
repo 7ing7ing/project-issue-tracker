@@ -65,7 +65,7 @@ module.exports = function (app) {
           error: "missing _id",
         });
       }
-      //console.log("updating issue");
+
       if (
         !req.body.issue_title &&
         !req.body.issue_text &&
@@ -100,7 +100,7 @@ module.exports = function (app) {
               });
             } else {
               return res.json({
-                result: "succesfully updated",
+                result: "successfully updated",
                 _id: filter._id,
               });
             }
