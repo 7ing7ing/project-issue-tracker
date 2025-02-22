@@ -5,14 +5,15 @@ const bodyParser = require("body-parser");
 const expect = require("chai").expect;
 const cors = require("cors");
 require("dotenv").config();
+const path = require('path');
 
-const apiRoutes = require("./routes/api.js");
-const fccTestingRoutes = require("./routes/fcctesting.js");
-const runner = require("./test-runner");
+const apiRoutes = require("../routes/api.js");
+// const fccTestingRoutes = require("../routes/fcctesting.js");
+// const runner = require("../test-runner.js");
 
 const app = express();
 
-app.use("/public", express.static(process.cwd() + "/public"));
+app.use("/public", express.static(path.join(__dirname, "..","public")));
 
 app.use(cors({ origin: "*" })); //For FCC testing purposes only
 
@@ -21,16 +22,16 @@ app.use(express.urlencoded({ extended: true }));
 
 //Sample front-end
 app.route("/:project/").get(function (req, res) {
-  res.sendFile(process.cwd() + "/views/issue.html");
+  res.sendFile(path.join(__dirname, "..", "views", "issue.html"));
 });
 
 //Index page (static HTML)
 app.route("/").get(function (req, res) {
-  res.sendFile(process.cwd() + "/views/index.html");
+  res.sendFile(path.join(__dirname, "..", "views", "index.html"));
 });
 
 //For FCC testing purposes
-fccTestingRoutes(app);
+// fccTestingRoutes(app);
 
 //Routing for API
 apiRoutes(app);

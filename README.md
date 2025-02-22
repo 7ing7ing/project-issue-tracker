@@ -14,4 +14,4 @@
 
 :link:Link:
 
-- https://project-issue-tracker.onrender.com
+- https://project-issue-tracker-tau.vercel.app/
